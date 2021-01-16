@@ -6,7 +6,7 @@ import 'package:dodo/pages/setting.dart';
 import 'package:dodo/pages/user.dart';
 import 'package:flutter/material.dart';
 //import 'package:rty/login_page.dart';
-//import 'package:rty/pages/camera.dart';
+import 'package:dodo/pages/camera.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -102,8 +102,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     Home(),
     Menu(),
     Appointment(),
+    Cameras(),
     User(),
-    //Cameras(),
+
     Setting(),
   ];
   void onTappedBar(int index) {
