@@ -292,3 +292,125 @@
 //
 //   timestamp() {}
 // }
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+class Cameras extends StatefulWidget {
+  @override
+  _CamerasState createState() => _CamerasState();
+}
+
+class _CamerasState extends State<Cameras> {
+  File imageFile; // holding the image instance
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void openImagePicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 150,
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'Pick an image',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                FlatButton(
+                  child: Text(
+                    'Use Camera',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onPressed: () {
+                    getImage(context, ImageSource.camera);
+                  },
+                ),
+                FlatButton(
+                  child: Text(
+                    'Use Gallery',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onPressed: () {
+                    getImage(context, ImageSource.gallery);
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void getImage(BuildContext context, ImageSource source) {
+    ImagePicker.pickImage(
+      source: source,
+      maxWidth: 400,
+    ).then((File image) {
+
+      setState(() {
+        imageFile = image;
+      });
+      Navigator.pop(context);
+      uploadImage(imageFile);
+    });
+  }
+
+  uploadImage(File image, {String imagePath}) async {
+
+    // image ==> the image picked from the camera
+    // So write logic to upload the image to a server for prediction
+    // cheers
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      SizedBox(
+        height: 20,
+      ),
+      OutlineButton(
+        borderSide: BorderSide(color: Colors.lightBlue),
+        onPressed: () {
+          openImagePicker(context);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.camera_alt),
+            SizedBox(
+              width: 5.0,
+            ),
+            Text('Upload an image')
+          ],
+        ),
+      ),
+      SizedBox(
+        height: 10.0,
+      ),
+      imageFile == null
+          ? Text('Please choose an image')
+          : Image.file(
+        imageFile,
+        fit: BoxFit.cover,
+        height: 300.0,
+        alignment: Alignment.topCenter,
+        width: MediaQuery.of(context).size.width,
+      ),
+
+    ]);
+  }
+}
